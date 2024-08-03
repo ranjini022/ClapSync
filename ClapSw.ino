@@ -1,9 +1,6 @@
-// Clap Light Switch
-// Serhii Bazavluk | March 2021
-// YouTube: https://www.youtube.com/electricalpro
 
 int mic = 2;       // microphone module
-int indicLED = 13; // indication pin
+int indiLED = 13; // indication pin
 int lightPin = 9;  // relay (lights control)
 bool lightState = true;
 bool ignoreInt = false;
@@ -12,7 +9,7 @@ uint32_t ClapDetetedTime [3] {};
 
 void setup() {
   Serial.begin(115200);
-  pinMode(indicLED, OUTPUT);    
+  pinMode(indiLED, OUTPUT);    
   pinMode(lightPin, OUTPUT);  
   digitalWrite(lightPin, lightState);
   attachInterrupt(digitalPinToInterrupt(mic), ISR_ClapDetected, FALLING);
@@ -23,13 +20,13 @@ delay(2);
 
 if(millis() - ClapDetetedTime[2] >= 800)
 {
-  digitalWrite(indicLED, LOW);
+  digitalWrite(indiLED, LOW);
 }
 
 if(millis() - ClapDetetedTime[2] < 800 && millis() - ClapDetetedTime[1] < 800 && ClapDetected && ClapDetetedTime[1] - ClapDetetedTime[0]>=800)
   {
     Serial.println("double clap detected");
-    digitalWrite(indicLED, LOW);
+    digitalWrite(indiLED, LOW);
     Serial.print("Setting light to ");
     Serial.println(String(!lightState));
     digitalWrite(lightPin, lightState);
@@ -49,6 +46,6 @@ void ISR_ClapDetected()
   ClapDetetedTime[2] = millis();
   ClapDetected = true;
   Serial.println("clap detected");
-  digitalWrite(indicLED, HIGH);
+  digitalWrite(indiLED, HIGH);
   }
 }
